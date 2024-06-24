@@ -128,8 +128,8 @@
                 </a>
             </li> --}}
 
-            <li class="sidebar-item {{ Request::is('operator/ubah_password_operator') ? 'active' : '' }}">
-                <a href="/operator/ubah_password_operator" class="sidebar-link">
+            <li class="sidebar-item {{ Request::is("ubahpass_admin/$user->nomor_id/index") ? 'active' : '' }}">
+                <a href="{{ route('ubahpass_admin.index', $user->nomor_id) }}" class="sidebar-link">
                     <i class="bi bi-pencil-square"></i>
                     <span>Ganti Password</span>
                 </a>

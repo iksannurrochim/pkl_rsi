@@ -116,7 +116,8 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="avatar avatar-xl">
-                                <img alt="image" src="{{ $users->foto == null ? asset('template/assets/compiled/jpg/1.jpg') : asset('files/Profile/' . $users->foto) }}" class="rounded-circle profile-widget-picture" style="width: 70px; height: 70px; display: block; margin: 0 auto;">
+                                <img alt="image" src="{{ $user->foto == null ? asset('template/assets/compiled/jpg/1.jpg') : asset('files/Profile/' . $user->foto) }}" class="rounded-circle profile-widget-picture" style="width: 70px; height: 70px; display: block; margin: 0 auto;">
+
                             </div>
                             <div class="ms-3 name">
                                 <h4 class="font-bold">{{ Auth::user()->username }}</h4>

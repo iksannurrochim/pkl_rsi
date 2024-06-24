@@ -80,7 +80,7 @@ class PenyeliaEditController extends Controller
             'fileProfile.mimes' => 'Format gambar tidak valid. Hanya diperbolehkan: jpeg, png, jpg, gif.',
             'fileProfile.max' => 'Ukuran gambar terlalu besar. Maksimal 2 MB.',
             'nama.required' => 'Nama harus diisi.',
-            'id.required' => 'NIM / NIS harus diisi.',
+            'id.required' => 'NIM harus diisi.',
             'email.required' => 'Email harus diisi.',
             'email.email' => 'Email tidak valid.',
             'hp.required' => 'Handphone harus diisi.',

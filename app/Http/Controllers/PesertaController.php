@@ -7,6 +7,7 @@ use App\Models\instansi;
 use App\Models\penyelia;
 use App\Models\peserta;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -17,6 +18,7 @@ class PesertaController extends Controller
      */
     public function index(Request $request)
     {
+        $user = User::where('nomor_id', Auth::user()->nomor_id)->first();
         $katakunci = $request->katakunci;
         $jumlahbaris = $request->session()->get('jumlahbaris', 20);
 
@@ -32,7 +34,7 @@ class PesertaController extends Controller
         }
 
 
-        return view('peserta.index', compact('data', 'instansiManagers'));
+        return view('peserta.index', compact('data', 'instansiManagers', 'user'));
         // return view('peserta.index');
     }
 
@@ -41,10 +43,11 @@ class PesertaController extends Controller
      */
     public function create()
     {
+        $user = User::where('nomor_id', Auth::user()->nomor_id)->first();
         $instansis = instansi::all();
         $penyelia = penyelia::all();
         // return view('peserta.create');
-        return view('peserta.create', compact('instansis', 'penyelia'));
+        return view('peserta.create', compact('instansis', 'penyelia', 'user'));
     }
 
     /**
@@ -149,11 +152,12 @@ class PesertaController extends Controller
      */
     public function edit(string $id)
     {
+        $user = User::where('nomor_id', Auth::user()->nomor_id)->first();
         $instansis = instansi::all();
         $penyelia = penyelia::all();
 
         $data = peserta::where('nim', $id)->first();
-        return view('peserta.edit', compact('data', 'instansis', 'penyelia'));
+        return view('peserta.edit', compact('data', 'instansis', 'penyelia', 'user'));
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\penyelia;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -15,6 +16,7 @@ class penyeliaController extends Controller
      */
     public function index(Request $request)
     {
+        $user = User::where('nomor_id', Auth::user()->nomor_id)->first();
         $katakunci = $request->katakunci;
         $jumlahbaris = 20;
         if(strlen($katakunci)){
@@ -25,7 +27,7 @@ class penyeliaController extends Controller
         }else{
             $data = penyelia::orderBy('id', 'asc')->paginate($jumlahbaris);
         }
-        return view('penyelia.index')->with('data', $data);
+        return view('penyelia.index',compact('user', 'data'));
         // return "Hi";
     }
 
@@ -34,7 +36,8 @@ class penyeliaController extends Controller
      */
     public function create()
     {
-        return view('penyelia.create');
+        $user = User::where('nomor_id', Auth::user()->nomor_id)->first();
+        return view('penyelia.create',compact('user'));
     }
 
     /**
@@ -99,8 +102,9 @@ class penyeliaController extends Controller
      */
     public function edit(string $id)
     {
+        $user = User::where('nomor_id', Auth::user()->nomor_id)->first();
         $data = penyelia::where('id',$id)->first();
-        return view('penyelia.edit')->with('data', $data);
+        return view('penyelia.edit', compact('user', 'data'));
     }
 
     /**

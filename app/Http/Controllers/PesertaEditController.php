@@ -69,83 +69,26 @@ class PesertaEditController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // $request->validate([
-        //     'fileProfile' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-        //     'instansi_id' => 'required|exists:instansi,id',
-        //     'nama' => 'required',
-        //     'nim' => 'required',
-        //     'jurusan' => 'required',
-        //     'hp' => 'required',
-        //     'email' => 'required|email|unique:users,email,' . $id . ',nomor_id',
-        //     'status' => 'required',
-        // ], [
-        //     'fileProfile.image' => 'Foto profile harus berupa gambar',
-        //     'fileProfile.mimes' => 'Format gambar tidak valid. Hanya diperbolehkan jpeg,jpg,png,gif.',
-        //     'fileProfile.max' => 'Ukuran gambar terlalu besar. Maksimal 2 MB',
-        //     'instansi_id.required' => 'Instansi wajib diisi',
-        //     'nama.required' => 'Nama wajib diisi',
-        //     'nim.required' => 'NIM wajib diisi',
-        //     'jurusan.required' => 'Jurusan wajib diisi',
-        //     'hp.required' => 'Nomor HP wajib diisi',
-        //     'email.required' => 'Email wajib diisi',
-        //     'email.email' => 'Email tidak valid',
-        //     'email.unique' => 'Email sudah terdaftar',
-        //     'status.required' => 'Status wajib diisi',
-        // ]);
-
-        // $peserta = Peserta::where('nim', $id)->first();
-        // $pesertaData = [
-        //     'instansi_id' => $request->instansi_id,
-        //     'nama' => $request->nama,
-        //     'jurusan' => $request->jurusan,
-        //     'hp' => $request->hp,
-        //     'status' => $request->status,
-        // ];
-
-        // if ($request->hasFile('fileProfile')) {
-        //     if ($peserta->foto) {
-        //         $oldPath = public_path('files/Profile/' . $peserta->foto);
-        //         if (File::exists($oldPath)) {
-        //             File::delete($oldPath);
-        //         }
-        //     }
-
-        //     $file = $request->file('fileProfile');
-        //     $fileName = $id . '_' . time() . '.' . $file->getClientOriginalExtension();
-        //     $file->move(public_path('files/Profile'), $fileName);
-        //     $pesertaData['foto'] = $fileName;
-        // }
-
-        // $peserta->update($pesertaData);
-
-        // User::where('nomor_id', $id)->update([
-        //     'nama' => $request->nama,
-        //     'email' => $request->email,
-        // ]);
-
-        // return redirect()->route('dashboard')->with('success', 'Profil peserta berhasil disimpan');
-    
         $request->validate([
             'fileProfile' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'nama' => 'required|string',
             'nim' => 'required',
-            'instansi_id' => 'required|exists:instansi,id',
-            'jurusan' => 'required',
             'hp' => 'required|numeric',
             'email' => 'required|email|max:255',
-            'status' => 'required',
+            'instansi_id' => 'required|exists:instansi,id',
+            'jurusan' => 'required',
         ], [
             'fileProfile.image' => 'Foto profile harus berupa gambar.',
             'fileProfile.mimes' => 'Format gambar tidak valid. Hanya diperbolehkan: jpeg, png, jpg, gif.',
             'fileProfile.max' => 'Ukuran gambar terlalu besar. Maksimal 2 MB.',
             'nama.required' => 'Nama harus diisi.',
-            'nim.required' => 'NIM / NIS harus diisi.',
-            'instansi_id.required' => 'Instansi wajib diisi',
-            'jurusan.required' => 'Jurusan harus diisi.',
+            'NIM.required' => 'NIM harus diisi.',
             'email.required' => 'Email harus diisi.',
             'email.email' => 'Email tidak valid.',
             'hp.required' => 'Handphone harus diisi.',
-            'status.required' => 'Status harus diisi.',
+            'instansi_id.required' => 'Instansi harus diisi',
+            'jurusan.required' => 'Program Studi harus diisi',
+
         ]);
 
         // Cek email unik
@@ -155,7 +98,7 @@ class PesertaEditController extends Controller
         }
 
         // Update to DB
-        $peserta = Peserta::where('nim', $id)->first(); 
+        $peserta = peserta::where('nim', $id)->first(); 
         $pesertaData = [
             'nama' => $request->nama,
             'hp' => $request->hp,
@@ -189,6 +132,7 @@ class PesertaEditController extends Controller
         ]);
 
         return redirect()->route('dashboard')->with('success', 'Profil peserta berhasil diupdate.');
+        
     }
 
     /**

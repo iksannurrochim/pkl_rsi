@@ -54,7 +54,7 @@ class NilepController extends Controller
         $ajukannilai = $pesertaList->count();
     
         return view('nilep.create', [
-            'title' => 'Progres Peserta',
+            'title' => 'Nilai Peserta',
             'nim_peserta' => $peserta->nim,
             'penyelia' => $penyelia,
         ])->with(compact('peserta', 'nilai', 'penyelia', 'pesertaList', 'ajukannilai'));
@@ -81,7 +81,9 @@ class NilepController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // $nilai = nilep::findOrFail($id);
+        // $penyelia = Penyelia::where('id', Auth::user()->nomor_id)->first();
+        // return view('nilai.edit', compact('nilai', 'penyelia'));
     }
 
     /**
@@ -89,7 +91,24 @@ class NilepController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // $request->validate([
+        //     'nilai' => 'required|numeric',
+        //     'evaluasi' => 'required|string',
+        // ]);
+
+        // $nilai = nilep::findOrFail($id);
+        // $nilai->nilai = $request->input('nilai');
+        // $nilai->evaluasi = $request->input('evaluasi');
+        // $nilai->save();
+
+        // // Ambil data penyelia yang sedang login
+        // $penyelia = Penyelia::where('id', Auth::user()->nomor_id)->first();
+
+        // if (!$penyelia) {
+        //     return redirect()->back()->with('error', 'Penyelia tidak ditemukan');
+        // }
+
+        // return redirect()->route('uspenyelia.pengajuannilai', $penyelia->id)->with('success', 'Nilai berhasil diperbarui');
     }
 
     /**

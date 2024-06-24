@@ -14,7 +14,7 @@
         <h3>Edit Profil</h3>
     </div>
     <div class="page-content">
-        <form action="{{ route('edit_profil_operator.update', $user->nomor_id) }}" method="post" id="progresForm" enctype="multipart/form-data">
+        <form id="editForm" action="{{ route('edit_profil_operator.update', $user->nomor_id) }}" method="post" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <section id="multiple-column-form">
@@ -64,7 +64,7 @@
 
 
                                         <div class="col-12 d-flex justify-content-end">
-                                            <button type="submit" class="btn btn-primary me-1 mb-1" id="submitBtn">Submit</button>
+                                            <button type="button" class="btn btn-primary me-1 mb-1" id="submitBtn">Submit</button>
                                         </div>
                                     </div>
                                 </div>
@@ -82,9 +82,59 @@
 <script src="{{ asset('template/assets/static/js/pages/parsley.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<script>
+    $(document).ready(function () {
+    $('#submitBtn').click(function (event) {
+        event.preventDefault(); // Prevent default form submission
+        Swal.fire({
+            title: 'Apakah Anda Yakin?',
+            text: "ingin mengubah data",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, ubah data',
+            cancelButtonText: 'Batal',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var form = $('#editForm')[0];
+                var formData = new FormData(form);
+
+                $.ajax({
+                    url: $(form).attr('action'),
+                    method: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        // Show SweetAlert upon successful submission
+                        Swal.fire({
+                            title: 'Berhasil Mengubah Data',
+                            text: 'Data Berhasil Diubah',
+                            icon: 'success',
+                            timer: 1500,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        }).then((result) => {
+                            // Redirect to dashboard upon SweetAlert confirmation
+                            window.location.href = "{{ url('dashboard') }}";
+                        });
+                    },
+                    error: function (error) {
+                        console.error('Error:', error);
+                        // Handle error case if necessary
+                    }
+                });
+            }
+        });
+    });
+});
+</script>
+
+<script>
     function showFileName(input) {
         var fileName = input.files[0].name;
         $('#fileName').text(fileName);

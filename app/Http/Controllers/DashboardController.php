@@ -135,6 +135,7 @@ class DashboardController extends Controller
                     'title' => 'Dashboard Operator',
                     'labels' => $labels,
                     'values' => $values,
+                    'user' => $users,
                     'jumlahPeserta' => Peserta::count(),
                     'jumlahPenyelia' => Penyelia::count(),
                     'jumlahInstansi' => Instansi::count(),

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\instansi;
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class instansiController extends Controller
@@ -13,6 +15,7 @@ class instansiController extends Controller
      */
     public function index(Request $request)
     {
+        $user = User::where('nomor_id', Auth::user()->nomor_id)->first();
         $katakunci = $request->katakunci;
         $jumlahbaris = 20;
         if(strlen($katakunci)){
@@ -22,7 +25,7 @@ class instansiController extends Controller
         }else{
             $data = instansi::orderBy('id', 'asc')->paginate($jumlahbaris);
         }
-        return view('instansi.index')->with('data', $data);
+        return view('instansi.index',compact('user', 'data'));
         // return 'Hi';
     }
 
@@ -31,7 +34,8 @@ class instansiController extends Controller
      */
     public function create()
     {
-        return view('instansi.create');
+        $user = User::where('nomor_id', Auth::user()->nomor_id)->first();
+        return view('instansi.create',compact('user'));
     }
 
     /**
@@ -79,8 +83,9 @@ class instansiController extends Controller
      */
     public function edit(string $id)
     {
+        $user = User::where('nomor_id', Auth::user()->nomor_id)->first();
         $data = instansi::where('id',$id)->first();
-        return view('instansi.edit')->with('data', $data);
+        return view('instansi.edit',compact('user', 'data'));
     }
 
     /**

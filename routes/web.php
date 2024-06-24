@@ -71,6 +71,7 @@ Route::group(['middleware' => ['auth','prevent-back-history']], function () {
     Route::get('/nilai/{nim}/shownilai', [nilaiController::class, 'showNilai'])->name('nilai.shownilai');
     Route::post('/nilai/store', [nilaiController::class, 'store'])->name('nilai.store');
     Route::get('/nilai/{nim}/nilaipeserta', [NilaiController::class, 'nilaiPeserta'])->name('nilai.nilaipeserta');
+    Route::get('/uspenyelia/{nim}/lihatnilai', [NilaiController::class, 'lihatNilai'])->name('uspenyelia.lihatnilai');
 
     Route::get('/progres/create', [progesPesertaController::class, 'create'])->name('progres.create');
     
@@ -85,6 +86,9 @@ Route::group(['middleware' => ['auth','prevent-back-history']], function () {
     Route::get('/uspeserta/evaluasi', [nilaiController::class, 'index'])->name('uspeserta.evaluasi');
     Route::post('/uspeserta/evaluasi', [nilaiController::class, 'ajukanNilai'])->name('uspeserta.evaluasi');
     Route::delete('/uspeserta/batal-ajukan/{nim_peserta}', [ProgresController::class, 'destroy'])->name('uspeserta.batal-ajukan');
+    Route::get('/nilai/{nim_peserta}/edit', [nilaiController::class, 'editNilai'])->name('nilai.edit');
+    Route::put('/nilai/{nim_peserta}', [nilaiController::class, 'updateNilai'])->name('nilai.update');
+    Route::delete('/nilai/destroyNilai/{nim_peserta}', [nilaiController::class, 'destroyNilai'])->name('nilai.destroyNilai');
 
     Route::get('/uspenyelia/{id_penyelia}/pengajuannilai', [nilaiController::class, 'setujuiNilai'])->name('uspenyelia.pengajuannilai');
     // Route::post('/nilai/{nim}/storenilai', [nilaiController::class, 'store'])->name('nilai.shownilai');
@@ -101,7 +105,10 @@ Route::group(['middleware' => ['auth','prevent-back-history']], function () {
     Route::resource('/operator/edit_profil_operator', OperatorEditController::class);
     Route::resource('/peserta/ubah_password', UbahPasswordController::class);
     Route::resource('/penyelia/ubah_password_penyelia', UbahPasswordPenyController::class);
-    Route::resource('/operator/ubah_password_operator', UbahPasswordAdminController::class);
+    // Route::resource('/operator/ubah_password_operator', UbahPasswordAdminController::class);
+    Route::get('/ubahpass_admin/{nomor_id}/index', [UbahPasswordAdminController::class, 'index'])->name('ubahpass_admin.index');
+    Route::put('/ubahpass_admin/{nomor_id}/update', [UbahPasswordAdminController::class, 'update'])->name('ubahpass_admin.update');
+    // Route::put('/operator/ubah_password_operator', [UbahPasswordAdminController::class, 'update'])->name('ubahpass_admin.index');
     Route::resource('materi', MateriController::class);
     Route::resource('materipeserta', MateriPesertaController::class);
     Route::resource('/penyelia/nilep', NilepController::class);

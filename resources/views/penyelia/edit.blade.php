@@ -63,13 +63,13 @@
                         >
                         <input
                           type="text"
-                          id="id"
+                          id="nama"
                           class="form-control"
                           placeholder="Nomor Identitas"
                           name="id"
                           data-parsley-required="true"
                           value="{{ $data->id }}"
-                          readonly
+                          disabled
                           required
                         />
                       </div>
@@ -93,23 +93,6 @@
                       </div>
                     </div>
 
-                    {{-- <div class="col-md-6 col-12">
-                        <div class="form-group mandatory">
-                          <label for="hp" class="form-label"
-                            >No. HP</label
-                          >
-                          <input
-                            type="tel"
-                            id="hp"
-                            class="form-control"
-                            name="hp"
-                            placeholder="Nomor HP"
-                            data-parsley-required="true"
-                            value="{{ $data->hp }}"
-                            required
-                          />
-                        </div>
-                    </div> --}}
 
                   <div class="row">
                     <div class="col-12 d-flex justify-content-end">
@@ -198,9 +181,9 @@
     });
 </script>
 
-  <script>
+  {{-- <script>
     document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('id').setAttribute('disabled', 'true');
     });
-  </script>
+  </script> --}}
 @endsection

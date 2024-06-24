@@ -33,7 +33,7 @@
                                                 @if($pengajuan === 0)
                                                     <a href='{{ route("nilai.shownilai", $peserta->nim) }}' class="btn btn-primary">Tambah Nilai</a>
                                                 @elseif($pengajuan === 1)
-                                                    <a href="#" class="btn btn-success">Lihat Nilai</a>
+                                                    <a href='{{ route("uspenyelia.lihatnilai", $peserta->nim) }}' class="btn btn-success">Lihat Nilai</a>
                                                 @endif
                                             </div>
                                         </div>

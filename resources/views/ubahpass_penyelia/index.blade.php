@@ -14,7 +14,7 @@
         <h3>Ubah Password</h3>
     </div>
     <div class="page-content">
-        <form action="{{ route('ubah_password.update', $penyelia->id) }}" method="post" id="progresForm" enctype="multipart/form-data">
+        <form id="editForm" action="{{ route('ubah_password.update', $penyelia->id) }}" method="post" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <section id="multiple-column-form">
@@ -51,7 +51,7 @@
                                             </div>
                                         </div>
                                         <div class="col-12 d-flex justify-content-end">
-                                            <button type="submit" class="btn btn-primary me-1 mb-1" id="submitBtn">Submit</button>
+                                            <button type="button" class="btn btn-primary me-1 mb-1" id="submitBtn">Submit</button>
                                         </div>
                                     </div>
                                 </div>
@@ -69,4 +69,55 @@
 <script src="{{ asset('template/assets/static/js/pages/parsley.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#submitBtn').click(function () {
+            Swal.fire({
+                title: 'Apakah Anda Yakin?',
+                text: "ingin mengganti passowrd?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, ganti password!',
+                cancelButtonText: 'Batal',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#editForm').submit();
+                }
+            });
+        });
+
+        $('#editForm').submit(function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Perform form submission via AJAX
+            $.ajax({
+                url: $(this).attr('action'),
+                method: 'POST',
+                data: $(this).serialize(),
+                success: function (response) {
+                    // Show SweetAlert upon successful submission
+                    Swal.fire({
+                        title: 'Berhasil Mengubah Password',
+                        text: 'Password Berhasil Diubah',
+                        icon: 'success',
+                        timer: 1500, 
+                        timerProgressBar: true, // Display progress bar
+                        showConfirmButton: false // Hide the 'OK' button
+                    }).then((result) => {
+                        // Redirect to progres page upon SweetAlert confirmation
+                        window.location.href = "{{ url('dashboard') }}";
+                    });
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                    // Handle error case if necessary
+                }
+            });
+        });
+    });
+</script>
+
 @endsection

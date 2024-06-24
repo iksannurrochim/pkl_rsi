@@ -1,4 +1,5 @@
 @extends('layouts.templatepenyelia')
+
 @section('model')
 @section('judul', 'Tambah Nilai')
 
@@ -37,13 +38,13 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-group mandatory">
                                             <label for="nilai" class="form-label">Nilai</label>
-                                            <input class="form-control" name="nilai" id="nilai" placeholder="Masukkan nilai 0-100" type="text" value="{{ Session::get('nilai') }}" required>
+                                            <input class="form-control" name="nilai" id="nilai" placeholder="Masukkan nilai 0-100" type="text" value="{{ old('nilai') }}" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group mandatory">
                                             <label for="evaluasi" class="form-label">Evaluasi</label>
-                                            <textarea class="form-control" name="evaluasi" id="evaluasi" rows="3" placeholder="Evaluasi" required>{{ Session::get('evaluasi') }}</textarea>
+                                            <textarea class="form-control" name="evaluasi" id="evaluasi" rows="3" placeholder="Evaluasi" required>{{ old('evaluasi') }}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -63,17 +64,9 @@
   </div>
 </div>
 
-{{-- <script src="{{ asset('template/assets/static/js/components/dark.js')}}"></script>
-<script src="{{ asset('template/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js')}}"></script>
-<script src="{{ asset('template/assets/compiled/js/app.js')}}"></script> --}}
-      
-  
-      
-  <script src="{{ asset('template/assets/extensions/jquery/jquery.min.js')}}"></script>
-  <script src="{{ asset('template/assets/extensions/parsleyjs/parsley.min.js')}}"></script>
-  <script src="{{ asset('template/assets/static/js/pages/parsley.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
     $(document).ready(function () {
         $('#submitBtn').click(function () {
@@ -102,22 +95,35 @@
                 method: 'POST',
                 data: $(this).serialize(),
                 success: function (response) {
-                    // Show SweetAlert upon successful submission
-                    Swal.fire({
-                        title: 'Berhasil Menambahkan Progres',
-                        text: 'Progres berhasil ditambahkan!',
-                        icon: 'success',
-                        timer: 1500, 
-                        timerProgressBar: true, // Display progress bar
-                        showConfirmButton: false // Hide the 'OK' button
-                    }).then((result) => {
-                        // Redirect to progres page upon SweetAlert confirmation
-                        window.location.href = '{{ route('uspeserta.progres') }}';
-                    });
+                    if (response.success) {
+                        Swal.fire({
+                            title: 'Berhasil!',
+                            text: response.success,
+                            icon: 'success',
+                            timer: 1500, 
+                            timerProgressBar: true, 
+                            showConfirmButton: false 
+                        }).then(() => {
+                            window.location.href = '{{ route("uspenyelia.lihatnilai", $peserta->nim) }}';
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Gagal!',
+                            text: response.error,
+                            icon: 'error',
+                        });
+                    }
                 },
-                error: function (error) {
-                    console.error('Error:', error);
-                    // Handle error case if necessary
+                error: function (xhr) {
+                    let errorText = 'Terjadi kesalahan. Silakan coba lagi.';
+                    if (xhr.responseJSON && xhr.responseJSON.error) {
+                        errorText = xhr.responseJSON.error;
+                    }
+                    Swal.fire({
+                        title: 'Error!',
+                        text: errorText,
+                        icon: 'error',
+                    });
                 }
             });
         });

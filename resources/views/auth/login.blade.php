@@ -78,7 +78,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Mazer Admin Dashboard</title>
+    <title>Login</title>
     
     
     
@@ -88,6 +88,24 @@
   <link rel="stylesheet" href="{{ asset('template/assets/compiled/css/app-dark.css')}}">
   <link rel="stylesheet" href="{{ asset('template/assets/compiled/css/auth.css')}}">
 </head>
+
+<style>
+    #auth-right {
+    display: flex;
+    justify-content: center; /* Horizontal centering */
+    align-items: center;    /* Vertical centering */
+    height: 100%;           /* Ensure it takes full height of the container */
+    }
+
+    .auth-logo {
+        text-align: center;     /* Center text inside this div */
+    }
+
+    .auth-logo img {
+        max-width: 100%;        /* Ensure the image is responsive */
+        height: auto;
+    }
+</style>
 
 <body>
     <script src="{{ asset('template/assets/static/js/initTheme.js')}}"></script>
@@ -110,7 +128,7 @@
             <form action="/login" method="POST">
                 @csrf
                 <div class="form-group position-relative has-icon-left mb-4">
-                    <input id="identifier" type="text" value="{{ old('identifier') }}" name="identifier" class="form-control form-control-xl" required placeholder="Email">
+                    <input id="identifier" type="text" value="{{ old('identifier') }}" name="identifier" class="form-control form-control-xl" required placeholder="Email/NIM/NIP">
                     <div class="form-control-icon">
                         <i class="bi bi-person"></i>
                     </div>
@@ -141,7 +159,7 @@
     <div class="col-lg-7 d-none d-lg-block">
         <div id="auth-right">
             <div class="auth-logo">
-                <img src="{{ asset('images/miladrsi.jpg') }}" alt="Logo" style="width: 476px; height: auto;">
+                <img src="{{ asset('images/why-us.png') }}" alt="Logo" style="width: 476px; height: auto;">
             </div> 
         </div>
     </div>

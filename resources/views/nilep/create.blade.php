@@ -112,7 +112,7 @@
                         showConfirmButton: false // Hide the 'OK' button
                     }).then((result) => {
                         // Redirect to progres page upon SweetAlert confirmation
-                        window.location.href = '{{ route('uspeserta.progres') }}';
+                        window.location.href = "{{ route('uspenyelia.pengajuannilai', $penyelia->id) }}";
                     });
                 },
                 error: function (error) {

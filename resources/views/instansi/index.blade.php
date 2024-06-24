@@ -55,52 +55,18 @@
                                 <td title="{{$item->nama}}">{{{$item->nama}}}</td>
                                 <td title="{{$item->alamat}}">{{$item->alamat}}</td>
                                 <td>
-                                    {{-- <div class="btn-group mb-3" role="group" aria-label="Basic example">
-                                        <a href='{{url('instansi/'.$item->id. '/edit')}}' title="Edit" type="button" class="btn btn-primary">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
-                                        <form onsubmit="return confirm('Yakin akan menghapus data ini?')" class='d-inline' action="{{url('instansi/'.$item->id)}}"
-                                                method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                            <button title="Hapus" type="submit" name="submit" class="btn btn-danger">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
-                                    </div> --}}
-
                                     <div class="btn-group mb-3" role="group" aria-label="Basic example">
                                         <a href='{{url('instansi/'.$item->id. '/edit')}}' title="Edit" type="button" class="btn btn-primary">
                                             <i class="bi bi-pencil"></i>
                                         </a>
-                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal{{$item->id}}">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="deleteModal{{$item->id}}" tabindex="-1" aria-labelledby="deleteModalLabel{{$item->id}}" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="deleteModalLabel{{$item->id}}">Konfirmasi Hapus</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        Apakah Anda yakin ingin menghapus data ini?
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                        <form action="{{url('instansi/'.$item->id)}}" method="POST">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger">Hapus</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <form id="delForm{{$item->id}}" action="{{url('instansi/'.$item->id)}}" method="post" class="delete-form">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button title="Hapus" type="button" class="btn btn-danger delete-btn" data-id="{{$item->id}}">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
                                     </div>
-
                                 </td>
                             </tr>
                             <?php $i++ ?>
@@ -110,8 +76,6 @@
                 </div>
             </div>
         </div>
-        
-
     </section>
 
     {{-- <script src="{{ asset('template/assets/static/js/components/dark.js')}}"></script> --}}
@@ -121,20 +85,56 @@
     <script src="{{ asset('template/assets/extensions/datatables.net/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{ asset('template/assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.min.js')}}"></script>
     <script src="{{ asset('template/assets/static/js/pages/datatables.js')}}"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
+
 <script>
-    // Tampilkan SweetAlert setelah berhasil verifikasi
-    @if (session('delete'))
-        Swal.fire({
-            icon: 'success',
-            title: 'Berhasil Menghapus Peserta!',
-            text: '{{ session('success') }}',
-            showConfirmButton: false,
-            timer: 1500
+    $(document).ready(function () {
+        $('.delete-btn').click(function () {
+            var formId = $(this).data('id');
+            Swal.fire({
+                title: 'Apakah Anda Yakin?',
+                text: "Anda tidak dapat mengembalikan data yang dihapus!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // AJAX request to delete the data
+                    $.ajax({
+                        url: $('#delForm' + formId).attr('action'),
+                        method: 'POST',
+                        data: $('#delForm' + formId).serialize(),
+                        success: function (response) {
+                            Swal.fire({
+                                title: 'Berhasil Menghapus Instansi',
+                                text: 'Instansi Berhasil Dihapus',
+                                icon: 'success',
+                                timer: 1500, 
+                                timerProgressBar: true, // Display progress bar
+                                showConfirmButton: false // Hide the 'OK' button
+                            }).then((result) => {
+                                // Reload the page upon SweetAlert confirmation
+                                location.reload();
+                            });
+                        },
+                        error: function (error) {
+                            console.error('Error:', error);
+                            Swal.fire({
+                                title: 'Gagal Menghapus Instansi',
+                                text: 'Terjadi kesalahan saat menghapus instansi',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    });
+                }
+            });
         });
-    @endif
+    });
 </script>
 
 @endsection
